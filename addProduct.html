@@ -1,22 +1,52 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-  <title>Product List</title>
+  <title>Add product page</title>
   <link rel="stylesheet" href="style.css">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="TypeChange.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
   <header>
     <div class="header-div">
-      <h1>Product List</h1>
-      <button id="add-btn" type="button">ADD</button>
-      <button id="delete-product-btn" type="button">MASS DELETE</button>
+      <h1>Product Add</h1>
+      <input id="save-btn" type="submit" form="product_form">Save</button>
+      <button id="cancel-btn" type="button">Cancel</button>
     </div>
     <hr>
   </header>
   
+  <form id="product_form" method="POST" action="script.php">
+      
+      <input type="hidden" name="form_id" value="product-form">
 
+      <label for='sku'>SKU </label>
+      <input type="text" id="sku" required>
+      <br>
+
+      <label for="name">Name </label>
+      <input type="text" id="name" required>
+      <br>
+
+      <label for="price">Price ($) </label>
+      <input type="number" id="price" required>
+      <br>
+
+      <label>Type switcher</label>
+      <select id="productType" onchange="selectType()" required>
+        <option disabled selected value> Type Switcher </option>
+        <option id="DVD" value="DVDType">DVD</option>
+        <option id="Furniture" value="FurnitureType">Furniture</option>
+        <option id="Book" value="BookType">Book</option>
+      </select>
+      <br>
+
+      <div id="typeForm">
+
+      </div>
+  </form>
    
   <footer>
     <div id="footer">
