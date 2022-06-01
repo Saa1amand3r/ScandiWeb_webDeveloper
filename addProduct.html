@@ -19,32 +19,37 @@
   </header>
   
   <form id="product_form" method="POST" action="script.php">
-      
-      <input type="hidden" name="form_id" value="product-form">
+    <input type="hidden" name="form_id" value="product-form">
 
-      <label for='sku' id="sku-label">SKU </label> 
-      <input type="text" id="sku" required>
-      <br>
+      <div class="column">
 
-      <label for="name" id="name-label">Name </label>
-      <input type="text" id="name" required>
-      <br>
+        <div class="row">
+          <label for='sku' id="sku-label">SKU </label>
+          <input type="text" id="sku" class="form_inputs" required>
+        </div>
 
-      <label for="price" id="price-label">Price ($) </label>
-      <input type="number" id="price" required>
-      <br>
+        <div class="row">
+          <label for="name" id="name-label">Name </label>
+          <input type="text" id="name" class="form_inputs" required>
+        </div>
+        
+        <div class="row">
+          <label for="price" id="price-label">Price ($) </label>
+          <input type="number" class="form_inputs" id="price" required>
+        </div>
 
-      <label>Type switcher</label>
-      <select id="productType" onchange="selectType()" required>
-        <option disabled selected value> Type Switcher </option>
-        <option id="DVD" value="DVDType">DVD</option>
-        <option id="Furniture" value="FurnitureType">Furniture</option>
-        <option id="Book" value="BookType">Book</option>
-      </select>
-      <br>
+        <div class="row">
+          <label for="productType">Type switcher</label>
+          <select id="productType" onchange="selectType()" required>
+            <option disabled selected value> Type Switcher </option>
+            <option id="DVD" value="DVDType">DVD</option>
+            <option id="Furniture" value="FurnitureType">Furniture</option>
+            <option id="Book" value="BookType">Book</option>
+          </select>
+        </div>
 
-      <div id="typeForm">
-
+        <div id="typeForm"></div>
+        
       </div>
   </form>
    
