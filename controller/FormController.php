@@ -1,5 +1,4 @@
 <?php
-
 class FormController {
     public function processForm($form) {
         if (isset($form['form_id'])){ // checking if form is sended.
