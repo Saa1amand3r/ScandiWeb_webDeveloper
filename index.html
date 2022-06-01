@@ -1,3 +1,5 @@
+<?php include_once("script.php") ?>
+
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -10,35 +12,40 @@
   <header>
     <div class="header-div">
       <h1>Product List</h1>
-      <button id="add-btn" type="button">ADD</button>
-      <button id="delete-product-btn" type="button">MASS DELETE</button>
+      <button id="add-btn" class="btn" type="button" onclick="location.href = '/ScandiWeb_webDeveloper/addProduct.html'">ADD</button>
+      <form action="script.php" method="POST">
+        <input type="hidden" name="form_id" value="delete-button-form"/>
+        <button id="delete-product-btn" class="btn" type="submit">MASS DELETE</button>
+      </form>
     </div>
     <hr>
   </header>
   
-    <div class="product">
-      <p>First product</p>
-    </div>
+    
+  <div class="product">
+    
+    <p>First product</p>
+  </div>
 
-    <div class="product">
-      <p>Second product</p>
-    </div>
+  <div class="product">
+    <p>Second product</p>
+  </div>
 
-    <div class="product">
-      <p>Second product</p>
-    </div>
-    <div class="product">
-      <p>Second product</p>
-    </div>
-    <div class="product">
-      <p>Second product</p>
-    </div>
-    <div class="product">
-      <p>Second product</p>
-    </div>
-    <div class="product">
-      <p>Second product</p>
-    </div>
+  <div class="product">
+    <p>Second product</p>
+  </div>
+  <div class="product">
+    <p>Second product</p>
+  </div>
+  <div class="product">
+    <p>Second product</p>
+  </div>
+  <div class="product">
+    <p>Second product</p>
+  </div>
+  <div class="product">
+    <p>Second product</p>
+  </div>
 
    
   <footer>
