@@ -25,26 +25,26 @@
 
         <div class="row">
           <label for='sku' id="sku-label">SKU </label>
-          <input type="text" id="sku" class="form_inputs" required>
+          <input type="text" name="sku" id="sku" class="form_inputs" required>
         </div>
 
         <div class="row">
           <label for="name" id="name-label">Name </label>
-          <input type="text" id="name" class="form_inputs" required>
+          <input type="text" name="name" id="name" class="form_inputs" required>
         </div>
         
         <div class="row">
           <label for="price" id="price-label">Price ($) </label>
-          <input type="number" class="form_inputs" id="price" required>
+          <input type="number" name="price" class="form_inputs" id="price" required>
         </div>
 
         <div class="row">
           <label for="productType">Type switcher</label>
-          <select id="productType" onchange="selectType()" required>
+          <select id="productType" name="productType" onchange="selectType()" required>
             <option disabled selected value> Type Switcher </option>
-            <option id="DVD" value="DVDType">DVD</option>
-            <option id="Furniture" value="FurnitureType">Furniture</option>
-            <option id="Book" value="BookType">Book</option>
+            <option id="DVD" value="Dvd">DVD</option>
+            <option id="Furniture" value="Furniture">Furniture</option>
+            <option id="Book" value="Book">Book</option>
           </select>
         </div>
 

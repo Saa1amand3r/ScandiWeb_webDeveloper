@@ -10,26 +10,26 @@
         abstract public function save();
 
         public function getId() {
-            return $this->$id;
+            return $this->id;
         }
         public function getSku() {
-            return $this->$sku;
+            return $this->sku;
         }
         public function getName() {
-            return $this->$name;
+            return $this->name;
         }
         public function getPrice() {
-            return $this->$price;
+            return $this->price;
         }
 
         public function setSku($sku){
-            $this->$sku = $sku;
+            $this->sku = $sku;
         }
         public function setName($name) {
-            $this->$name = $name;
+            $this->name = $name;
         }
         public function setPrice($price) {
-            $this->$price = $price;
+            $this->price = $price;
         }
     }
 

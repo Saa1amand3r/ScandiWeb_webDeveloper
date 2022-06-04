@@ -1,55 +1,44 @@
 <?php
+include_once ('DataBaseConnection.php');
+include_once ('Product.php');
 
     class Book extends Product{
-        private const SQL_SAVE_TYPE_TO_PRODUCT = 'INSERT INTO product SET type = "book"';
-        private const SQL_SAVE_SKU_TO_PRODUCT = 'INSERT INTO product SET sku=?'; 
-        private const SQL_SAVE_INT_VALUES_TO_PRODUCT_BOOK = 'INSERT INTO product_book SET id=?, price=?, weight=?';
-        private const SQL_SAVE_STR_VALUES_TO_PRODUCT_BOOK = 'INSERT INTO product_book SET sku=?, name=?';
+        private const SQL_SAVE_TO_PRODUCT = 'INSERT INTO `product` SET type = "book", sku=?'; 
+        private const SQL_SAVE_VALUES_TO_PRODUCT_BOOK = 'INSERT INTO `product_book` SET id=?, price=?, weight=?, sku=?, name=?';
         private $weight;
 
         public function getWeight() {
-            return $this->$weight;
+            return $this->weight;
         }
 
         public function setWeight($weight) {
-            $this->$weight = $weight;
+            $this->weight = $weight;
+        }
+
+        function __construct($data) {
+            $this->setSku($data['sku']);
+            $this->setName($data['name']);
+            $this->setPrice($data['price']);
+            $this->setWeight($data['weight']);
         }
 
         public function delete() {
 
         }
+
+
         public function save() {
             $dbCon = new DataBaseConnection();
             $link = $dbCon->connect();
-            $result = $mysqli_query($link, Book::SQL_SAVE_TYPE_TO_PRODUCT);
-            if ($result == false) {
-                throw new Exception("SQL query execution failed");
-            }
+            
+            $stmt = $dbCon->prepared_query($link, Book::SQL_SAVE_TO_PRODUCT, [$this->sku]);
+            $stmt->store_result();
 
-            $stmt = $link->prepare(Book::SQL_SAVE_SKU_TO_PRODUCT);
-            $stmt->bind_param("s", $this->$sku);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result == false) {
-                throw new Exception("SQL query execution failed");
-            }
+            $lastId = $link->insert_id;
+            $stmt = $dbCon->prepared_query($link, Book::SQL_SAVE_VALUES_TO_PRODUCT_BOOK, [$lastId, $this->price, $this->weight,$this->sku, $this->name]);
+            $stmt->store_result();
 
-            $lastId = mysqli_insert_id($link);
-            $stmt = $link->prepare(Book::SQL_SAVE_INT_VALUES_TO_PRODUCT_BOOK);
-            $stmt->bind_param("i", $lastId, $this->$price, $this->$weight);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result == false) {
-                throw new Exception("SQL query execution failed");
-            }
-
-            $stmt = $link->prepare(Book::SQL_SAVE_STR_VALUES_TO_PRODUCT_BOOK);
-            $stmt->bind_param("s", $this->$sku, $this->$name);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result == false) {
-                throw new Exception("SQL query execution failed");
-            }
+            $link->close;
         }
     }
 
