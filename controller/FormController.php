@@ -1,8 +1,8 @@
 <?php
-include 'ValidationController.php';
-include $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Book.php';
-include $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Dvd.php';
-include $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Furniture.php';
+include_once ('ValidationController.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Book.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Dvd.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Furniture.php');
 
 class FormController {
     public function processForm($form) {
