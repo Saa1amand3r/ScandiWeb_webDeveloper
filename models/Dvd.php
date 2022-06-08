@@ -5,7 +5,8 @@ include_once ('Product.php');
 
     class Dvd extends Product{
         private const SQL_SAVE_TO_PRODUCT = 'INSERT INTO `product` SET type = "dvd", sku=?'; 
-        private const SQL_SAVE_VALUES_TO_PRODUCT_DISK = 'INSERT INTO `product_disk` SET id=?, price=?, size=?, sku=?, name=?';
+        private const SQL_SAVE_VALUES_TO_PRODUCT_DVD = 'INSERT INTO `product_dvd` SET id=?, price=?, size=?, sku=?, name=?';
+        private const SQL_LOAD_ALL_VALUES_FROM_PRODUCT_DVD = 'SELECT * FROM `product_dvd`';
         private $size;
 
         public function getSize() {
@@ -32,14 +33,24 @@ include_once ('Product.php');
             $dbCon = new DataBaseConnection();
             $link = $dbCon->connect();
             
-            $stmt = $dbCon->prepared_query($link, Dvd::SQL_SAVE_TO_PRODUCT, [$this->sku]);
+            $stmt = $dbCon->preparedQuery($link, Dvd::SQL_SAVE_TO_PRODUCT, [$this->sku]);
             $stmt->store_result();
 
             $lastId = $link->insert_id;
-            $stmt = $dbCon->prepared_query($link, Dvd::SQL_SAVE_VALUES_TO_PRODUCT_DISK, [$lastId, $this->price, $this->size,$this->sku, $this->name]);
+            $stmt = $dbCon->preparedQuery($link, Dvd::SQL_SAVE_VALUES_TO_PRODUCT_DVD, [$lastId, $this->price, $this->size,$this->sku, $this->name]);
             $stmt->store_result();
 
             $link->close;
+        }
+
+        public static function loadAll() {
+            $objects = Product::loadAllElements(Dvd::SQL_LOAD_ALL_VALUES_FROM_PRODUCT_DVD, 'Dvd');
+            return $objects;
+        }
+
+        public function simplify() {
+            $simpleProduct = new SimpleProduct($this, "Size", $this->getSize() . " MB");
+            return $simpleProduct;
         }
     }
 

@@ -6,7 +6,7 @@
         private const DATABASE_NAME = "scandiweb_junior";
         private const PASSWORD = "";
 
-        function connect() {
+        public function connect() {
             $sql = mysqli_connect(DataBaseConnection::SERVER_ADDRESS,DataBaseConnection::USERNAME,DataBaseConnection::PASSWORD,DataBaseConnection::DATABASE_NAME);
             if ($sql == false) {
                 throw new Exception("ERROR: Cant connect to MYSQL: " + mysqli_connect_error());
@@ -17,7 +17,7 @@
             }
         }
         
-        function prepared_query($mysqli, $sql, $params, $types = "")
+        public function preparedQuery($mysqli, $sql, $params, $types = "")
         {
             $types = $types ?: str_repeat("s", count($params));
             $stmt = $mysqli->prepare($sql);
@@ -25,6 +25,8 @@
             $stmt->execute();
             return $stmt;
         }
+
+        
     }
 
 
