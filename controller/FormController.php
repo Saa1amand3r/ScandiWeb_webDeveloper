@@ -1,4 +1,9 @@
 <?php
+include_once ('ValidationController.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Book.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Dvd.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Furniture.php');
+
 class FormController {
     public function processForm($form) {
         if (isset($form['form_id'])){ // checking if form is sended.
@@ -14,11 +19,35 @@ class FormController {
     }
 
     private function deleteProductForm($form) {
-        // realisation
+        $books = Book::loadAll();
+        $furnitureArray = Furniture::loadAll();
+        $dvds = Dvd::loadAll();
+        foreach($books as $product) {
+            if (isset($form[$product->getId()])) {
+                $product->delete();
+            }
+        }
+        foreach($dvds as $product) {
+            if (isset($form[$product->getId()])) {
+                $product->delete();
+            }
+        }
+        foreach($furnitureArray as $product) {
+            if (isset($form[$product->getId()])) {
+                $product->delete();
+            }
+        }
     }
 
     private function saveProductForm($form) {
-        //realisation
+        $validationMethod = 'validator' . $form['productType'];
+        $validationController = new ValidationController();
+        $validData = $validationController->$validationMethod($form);
+        if ($validData) {
+            $model = $validData['productType'];
+            $object = new $model($validData);
+            $object->save();
+        }
     }
 }
 

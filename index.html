@@ -1,5 +1,3 @@
-<?php include_once("script.php") ?>
-
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -13,40 +11,20 @@
     <div class="header-div">
       <h1>Product List</h1>
       <button id="add-btn" class="btn" type="button" onclick="location.href = '/ScandiWeb_webDeveloper/addProduct.html'">ADD</button>
-      <form action="script.php" method="POST">
-        <input type="hidden" name="form_id" value="delete-button-form"/>
-        <button id="delete-product-btn" class="btn" type="submit">MASS DELETE</button>
-      </form>
+      <button form="delete-button-form" id="delete-product-btn" class="btn" type="submit">MASS DELETE</button>
     </div>
     <hr>
   </header>
   
     
-  <div class="product">
-    
-    <p>First product</p>
+  <div id="product-container" class="products">
+      <form id="delete-button-form" action="script.php" method="POST">
+        <input type="hidden" name="form_id" value="delete-button-form"/>
+      </form>
   </div>
 
-  <div class="product">
-    <p>Second product</p>
-  </div>
-
-  <div class="product">
-    <p>Second product</p>
-  </div>
-  <div class="product">
-    <p>Second product</p>
-  </div>
-  <div class="product">
-    <p>Second product</p>
-  </div>
-  <div class="product">
-    <p>Second product</p>
-  </div>
-  <div class="product">
-    <p>Second product</p>
-  </div>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="ProductView.js"></script>
    
   <footer>
     <div id="footer">
