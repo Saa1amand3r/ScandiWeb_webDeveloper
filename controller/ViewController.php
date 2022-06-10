@@ -7,25 +7,16 @@ include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Furnitur
     class ViewController {
         public function __construct() {
             $this->view();
-            
-        }
-
-        public function __destruct() {
         }
 
         private function view() {
-            $books = Book::loadAll();
-            $furnitureArray = Furniture::loadAll();
-            $dvds = Dvd::loadAll();
-            $simpleProductArray = array_merge(Product::simplifyAllElements($books), 
-                                              Product::simplifyAllElements($furnitureArray),
-                                              Product::simplifyAllElements($dvds));
-            foreach($simpleProductArray as $simpleProduct) {
-                $jsonProductArray [] = $simpleProduct->toArray();
-                
+            $simpleProductArray = Product::loadAndSimplify();
+            if (!empty($simpleProductArray)) {
+                foreach($simpleProductArray as $simpleProduct) {
+                    $jsonProductArray [] = $simpleProduct->toArray();
+                }
+                echo json_encode($jsonProductArray);
             }
-            echo json_encode($jsonProductArray);
-            
         }
     }
 

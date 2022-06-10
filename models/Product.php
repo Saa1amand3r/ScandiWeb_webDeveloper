@@ -48,25 +48,33 @@
             while ($row = mysqli_fetch_array($result)) {
                 $object = new $model($row);
                 $object->setId($row['id']);
-                if($row['id'] <= 0) {
-                    throw new Exception("object is empty");
-                }
+                
                 $objects[] = $object;
             }
-            if (empty($objects)) {
-                throw new Exception("Objects is empty");
-            }
+            
             $link->close();
             return $objects;
         }
 
         public static function simplifyAllElements($data) {
-            foreach($data as $object) {
-                $simpleProduct = $object->simplify();
-                if($simpleProduct->getId() <=0) {
-                    throw new Exception("simple object empty");
-                } 
-                $simpleProductArray[] = $simpleProduct;
+            if (!empty($data)){
+                foreach($data as $object) {
+                    $simpleProduct = $object->simplify();
+                    $simpleProductArray[] = $simpleProduct;
+                }
+                return $simpleProductArray;
+            }
+        }
+
+        public static function loadAndSimplify() {
+            $products[] = Book::loadAll(); //NULL
+            $products[] = Furniture::loadAll();
+            $products[] = Dvd::loadAll();
+            $simpleProductArray = [];
+            foreach($products as $array) {
+                if (!empty($array)) {
+                    $simpleProductArray = array_merge($simpleProductArray, Product::simplifyAllElements($array));
+                }
             }
             return $simpleProductArray;
         }

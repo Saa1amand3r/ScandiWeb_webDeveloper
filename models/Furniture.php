@@ -7,6 +7,8 @@ include_once ('Product.php');
         private const SQL_SAVE_TO_PRODUCT = 'INSERT INTO `product` SET type = "furniture", sku=?'; 
         private const SQL_SAVE_VALUES_TO_PRODUCT_FURNITURE = 'INSERT INTO `product_furniture` SET id=?, price=?, sku=?, name=?, height=?, width=?, length=?';
         private const SQL_LOAD_ALL_VALUES_FROM_PRODUCT_FURNITURE = 'SELECT * FROM `product_furniture`';
+        private const SQL_DELETE_OBJECT_BY_ID = 'DELETE FROM `product_furniture` WHERE id=?';
+        private const SQL_DELETE_OBJECT_FROM_PRODUCTS_BY_ID = 'DELETE FROM `product` WHERE id=?';
         private $height;
         private $width;
         private $length;
@@ -45,7 +47,13 @@ include_once ('Product.php');
         }
 
         public function delete() {
+            $dbCon = new DataBaseConnection();
+            $link = $dbCon->connect();
 
+            $dbCon->preparedQuery($link, Furniture::SQL_DELETE_OBJECT_BY_ID, [$this->id]);
+            $dbCon->preparedQuery($link, Furniture::SQL_DELETE_OBJECT_FROM_PRODUCTS_BY_ID, [$this->id]);
+
+            $link->close();
         }
 
 

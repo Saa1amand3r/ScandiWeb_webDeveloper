@@ -7,6 +7,8 @@ include_once ('Product.php');
         private const SQL_SAVE_TO_PRODUCT = 'INSERT INTO `product` SET type = "dvd", sku=?'; 
         private const SQL_SAVE_VALUES_TO_PRODUCT_DVD = 'INSERT INTO `product_dvd` SET id=?, price=?, size=?, sku=?, name=?';
         private const SQL_LOAD_ALL_VALUES_FROM_PRODUCT_DVD = 'SELECT * FROM `product_dvd`';
+        private const SQL_DELETE_OBJECT_BY_ID = 'DELETE FROM `product_dvd` WHERE id=?';
+        private const SQL_DELETE_OBJECT_FROM_PRODUCTS_BY_ID = 'DELETE FROM `product` WHERE id=?';
         private $size;
 
         public function getSize() {
@@ -25,7 +27,13 @@ include_once ('Product.php');
         }
 
         public function delete() {
+            $dbCon = new DataBaseConnection();
+            $link = $dbCon->connect();
 
+            $dbCon->preparedQuery($link, Dvd::SQL_DELETE_OBJECT_BY_ID, [$this->id]);
+            $dbCon->preparedQuery($link, Dvd::SQL_DELETE_OBJECT_FROM_PRODUCTS_BY_ID, [$this->id]);
+
+            $link->close();
         }
 
 

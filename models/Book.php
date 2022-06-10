@@ -7,6 +7,8 @@ include_once ('SimpleProduct.php');
         private const SQL_SAVE_TO_PRODUCT = 'INSERT INTO `product` SET type = "book", sku=?'; 
         private const SQL_SAVE_VALUES_TO_PRODUCT_BOOK = 'INSERT INTO `product_book` SET id=?, price=?, weight=?, sku=?, name=?';
         private const SQL_LOAD_ALL_VALUES_FROM_PRODUCT_BOOK = 'SELECT * FROM `product_book`';
+        private const SQL_DELETE_OBJECT_BY_ID = 'DELETE FROM `product_book` WHERE id=?';
+        private const SQL_DELETE_OBJECT_FROM_PRODUCTS_BY_ID = 'DELETE FROM `product` WHERE id=?';
         private $weight;
 
         public function getWeight() {
@@ -27,7 +29,13 @@ include_once ('SimpleProduct.php');
         }
 
         public function delete() {
+            $dbCon = new DataBaseConnection();
+            $link = $dbCon->connect();
 
+            $dbCon->preparedQuery($link, Book::SQL_DELETE_OBJECT_BY_ID, [$this->id]);
+            $dbCon->preparedQuery($link, Book::SQL_DELETE_OBJECT_FROM_PRODUCTS_BY_ID, [$this->id]);
+
+            $link->close();
         }
 
 

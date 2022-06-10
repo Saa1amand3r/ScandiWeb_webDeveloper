@@ -19,7 +19,24 @@ class FormController {
     }
 
     private function deleteProductForm($form) {
-        // realisation
+        $books = Book::loadAll();
+        $furnitureArray = Furniture::loadAll();
+        $dvds = Dvd::loadAll();
+        foreach($books as $product) {
+            if (isset($form[$product->getId()])) {
+                $product->delete();
+            }
+        }
+        foreach($dvds as $product) {
+            if (isset($form[$product->getId()])) {
+                $product->delete();
+            }
+        }
+        foreach($furnitureArray as $product) {
+            if (isset($form[$product->getId()])) {
+                $product->delete();
+            }
+        }
     }
 
     private function saveProductForm($form) {
