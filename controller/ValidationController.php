@@ -24,7 +24,7 @@
                 $nameErr = "Name is required";
                 $this->errors[] = $nameErr;
             } else {
-                if (!preg_match("/^[a-zA-Z-' ]*$/",$data['name'])) {
+                if (!preg_match("/^[0-9a-zA-Z-' ]*$/",$data['name'])) {
                     $nameErr = "Only letters and white space allowed";
                     $this->errors[] = $nameErr;
                 }
