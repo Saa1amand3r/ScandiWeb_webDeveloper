@@ -13,16 +13,21 @@ include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Furnitur
         private $name;
         private $price;
         private $parameters;
+        private $type;
 
-        public function __construct($object, $paramName, $parameters) {
+        public function __construct($object, $paramName, $parameters, $type) {
             $this->setSku($object->getSku());
             $this->setName($object->getName());
             $this->setPrice($object->getPrice());
             $this->setId($object->getId());
             $this->setParameters($parameters);
             $this->setParamName($paramName);
+            $this->setType($type);
         }
 
+        public function getType() {
+            return $this->type;
+        }
         public function getId() {
             return $this->id;
         }
@@ -36,6 +41,9 @@ include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Furnitur
             return $this->price;
         }
 
+        protected function setType($type) {
+            $this->type = $type;
+        }
         protected function setId($id) {
             $this->id = $id;
         }
@@ -75,6 +83,16 @@ include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Furnitur
                 "parameters" => $this->getParameters()
             );
             return $data;
+        }
+
+        public function toBasicProduct() {
+            $model = $this->getType();
+            $object = new $model([]);
+            $object->setId($this->getId());
+            $object->setName($this->getName());
+            $object->setSku($this->getSku());
+            $object->setPrice($this->getPrice());
+            return $object;
         }
     }
 

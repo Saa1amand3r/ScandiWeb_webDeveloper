@@ -6,27 +6,44 @@
         private const DATABASE_NAME = "scandiweb_junior";
         private const PASSWORD = "";
 
+        private $link;
+        private $lastId;
+
         public function connect() {
-            $sql = mysqli_connect(DataBaseConnection::SERVER_ADDRESS,DataBaseConnection::USERNAME,DataBaseConnection::PASSWORD,DataBaseConnection::DATABASE_NAME);
-            if ($sql == false) {
+            //setter
+            $this->link = mysqli_connect(DataBaseConnection::SERVER_ADDRESS,DataBaseConnection::USERNAME,DataBaseConnection::PASSWORD,DataBaseConnection::DATABASE_NAME);
+            if ($this->link == false) {
                 throw new Exception("ERROR: Cant connect to MYSQL: " + mysqli_connect_error());
             }
             else {
-                mysqli_set_charset($sql, "utf8");
-                return $sql;
+                mysqli_set_charset($this->link, "utf8");
             }
         }
         
-        public function preparedQuery($mysqli, $sql, $params, $types = "")
+        public function preparedQuery($sql, $params, $types = "")
         {
             $types = $types ?: str_repeat("s", count($params));
-            $stmt = $mysqli->prepare($sql);
+            $stmt = $this->link->prepare($sql);
             $stmt->bind_param($types, ...$params);
             $stmt->execute();
             return $stmt;
         }
 
-        
+        public function query($sql) {
+            return $this->link->query($sql);
+        }
+
+        public function saveLastOperationId() {
+            $this->lastId = $this->link->insert_id;
+        }
+
+        public function getLastOperationId() {
+            return $this->lastId;
+        }
+        public function close() {
+            $this->link->close();
+        }
+
     }
 
 

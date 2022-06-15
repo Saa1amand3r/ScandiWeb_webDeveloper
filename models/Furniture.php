@@ -1,14 +1,14 @@
 <?php
 
-include_once ('DataBaseConnection.php');
 include_once ('Product.php');
+include_once ('SimpleProduct.php');
 
-    class Furniture extends Product{
-        private const SQL_SAVE_TO_PRODUCT = 'INSERT INTO `product` SET type = "furniture", sku=?'; 
-        private const SQL_SAVE_VALUES_TO_PRODUCT_FURNITURE = 'INSERT INTO `product_furniture` SET id=?, price=?, sku=?, name=?, height=?, width=?, length=?';
-        private const SQL_LOAD_ALL_VALUES_FROM_PRODUCT_FURNITURE = 'SELECT * FROM `product_furniture`';
+
+    class Furniture extends Product{ 
+        private const SQL_SAVE_VALUES_TO_PRODUCT_FURNITURE = 'INSERT INTO `product_furniture` SET price=?, sku=?, name=?, height=?, width=?, length=?, id=?';
         private const SQL_DELETE_OBJECT_BY_ID = 'DELETE FROM `product_furniture` WHERE id=?';
-        private const SQL_DELETE_OBJECT_FROM_PRODUCTS_BY_ID = 'DELETE FROM `product` WHERE id=?';
+        private const SQL_LOAD_ALL_VALUES = 'SELECT * FROM `product_furniture`';
+        private const TYPE = "Furniture";
         private $height;
         private $width;
         private $length;
@@ -38,47 +38,34 @@ include_once ('Product.php');
         }
 
         function __construct($data) {
-            $this->setSku($data['sku']);
-            $this->setName($data['name']);
-            $this->setPrice($data['price']);
-            $this->setHeight($data['height']);
-            $this->setWidth($data['width']);
-            $this->setLength($data['length']);
+            if (!empty($data)) {
+                $this->setSku($data['sku']);
+                $this->setName($data['name']);
+                $this->setPrice($data['price']);
+                $this->setHeight($data['height']);
+                $this->setWidth($data['width']);
+                $this->setLength($data['length']);
+            }
         }
 
         public function delete() {
-            $dbCon = new DataBaseConnection();
-            $link = $dbCon->connect();
-
-            $dbCon->preparedQuery($link, Furniture::SQL_DELETE_OBJECT_BY_ID, [$this->id]);
-            $dbCon->preparedQuery($link, Furniture::SQL_DELETE_OBJECT_FROM_PRODUCTS_BY_ID, [$this->id]);
-
-            $link->close();
+            Product::deleteProduct($this->getId(), self::SQL_DELETE_OBJECT_BY_ID);
         }
 
 
         public function save() {
-            $dbCon = new DataBaseConnection();
-            $link = $dbCon->connect();
-            
-            $stmt = $dbCon->preparedQuery($link, Furniture::SQL_SAVE_TO_PRODUCT, [$this->sku]);
-            $stmt->store_result();
-
-            $lastId = $link->insert_id;
-            $stmt = $dbCon->preparedQuery($link, Furniture::SQL_SAVE_VALUES_TO_PRODUCT_FURNITURE, [$lastId, $this->price,$this->sku, $this->name,
-                                                                                               $this->height, $this->width, $this->length]);
-            $stmt->store_result();
-
-            $link->close;
+            //furnitureToArray()
+            $parametersForFurniture = [$this->getPrice(),$this->getSku(), $this->getName(),
+                                       $this->getHeight(), $this->getWidth(), $this->getLength()];
+            Product::saveProduct(self::TYPE, $this->getSku(), self::SQL_SAVE_VALUES_TO_PRODUCT_FURNITURE, $parametersForFurniture);
         }
 
         public static function loadAll() {
-            $objects = Product::loadAllElements(Furniture::SQL_LOAD_ALL_VALUES_FROM_PRODUCT_FURNITURE, 'Furniture');
-            return $objects;
+            return Product::loadAllElements(self::SQL_LOAD_ALL_VALUES, self::TYPE);
         }
 
         public function simplify() {
-            $simpleProduct = new SimpleProduct($this, "Dimension", $this->getHeight() . "x" . $this->getWidth() . "x" . $this->getLength());
+            $simpleProduct = new SimpleProduct($this, "Dimension", $this->getHeight() . "x" . $this->getWidth() . "x" . $this->getLength(), self::TYPE);
             return $simpleProduct;
         }
     }

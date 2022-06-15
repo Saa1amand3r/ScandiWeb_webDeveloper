@@ -1,14 +1,12 @@
 <?php
-include_once ('DataBaseConnection.php');
 include_once ('Product.php');
 include_once ('SimpleProduct.php');
 
     class Book extends Product{
-        private const SQL_SAVE_TO_PRODUCT = 'INSERT INTO `product` SET type = "book", sku=?'; 
-        private const SQL_SAVE_VALUES_TO_PRODUCT_BOOK = 'INSERT INTO `product_book` SET id=?, price=?, weight=?, sku=?, name=?';
-        private const SQL_LOAD_ALL_VALUES_FROM_PRODUCT_BOOK = 'SELECT * FROM `product_book`';
+        private const SQL_SAVE_VALUES_TO_PRODUCT_BOOK = 'INSERT INTO `product_book` SET price=?, weight=?, sku=?, name=?, id=?';
         private const SQL_DELETE_OBJECT_BY_ID = 'DELETE FROM `product_book` WHERE id=?';
-        private const SQL_DELETE_OBJECT_FROM_PRODUCTS_BY_ID = 'DELETE FROM `product` WHERE id=?';
+        private const SQL_LOAD_ALL_VALUES = 'SELECT * FROM `product_book`';
+        private const TYPE = "Book";
         private $weight;
 
         public function getWeight() {
@@ -19,47 +17,36 @@ include_once ('SimpleProduct.php');
             $this->weight = $weight;
         }
 
+        private function setValues($data) {
+            $this->setSku($data['sku']);
+            $this->setName($data['name']);
+            $this->setPrice($data['price']);
+            $this->setWeight($data['weight']);
+        }
+
         public function __construct($data) {
             if (!empty($data)) {
-                $this->setSku($data['sku']);
-                $this->setName($data['name']);
-                $this->setPrice($data['price']);
-                $this->setWeight($data['weight']);
+                $this->setValues($data);
             }
         }
 
         public function delete() {
-            $dbCon = new DataBaseConnection();
-            $link = $dbCon->connect();
-
-            $dbCon->preparedQuery($link, Book::SQL_DELETE_OBJECT_BY_ID, [$this->id]);
-            $dbCon->preparedQuery($link, Book::SQL_DELETE_OBJECT_FROM_PRODUCTS_BY_ID, [$this->id]);
-
-            $link->close();
+            Product::deleteProduct($this->getId(), self::SQL_DELETE_OBJECT_BY_ID);
         }
 
 
         public function save() {
-            $dbCon = new DataBaseConnection();
-            $link = $dbCon->connect();
-            
-            $stmt = $dbCon->preparedQuery($link, Book::SQL_SAVE_TO_PRODUCT, [$this->sku]);
-            $stmt->store_result();
-
-            $lastId = $link->insert_id;
-            $stmt = $dbCon->preparedQuery($link, Book::SQL_SAVE_VALUES_TO_PRODUCT_BOOK, [$lastId, $this->price, $this->weight,$this->sku, $this->name]);
-            $stmt->store_result();
-
-            $link->close;
+            //change with BookToArray() method
+            $parametersForBook = [$this->getPrice(),$this->getWeight(), $this->getSku(), $this->getName()];
+            Product::saveProduct(self::TYPE, $this->getSku(), self::SQL_SAVE_VALUES_TO_PRODUCT_BOOK, $parametersForBook);
         }
 
         public static function loadAll() {
-            $objects = Product::loadAllElements(Book::SQL_LOAD_ALL_VALUES_FROM_PRODUCT_BOOK, 'Book');
-            return $objects;
+            return Product::loadAllElements(self::SQL_LOAD_ALL_VALUES, self::TYPE);
         }
 
         public function simplify() {
-            $simpleProduct = new SimpleProduct($this, "Weight", $this->getWeight() . "KG");
+            $simpleProduct = new SimpleProduct($this, "Weight", $this->getWeight() . "KG", self::TYPE);
             return $simpleProduct;
         }
     }
