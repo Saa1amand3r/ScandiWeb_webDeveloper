@@ -1,0 +1,126 @@
+html {
+    height: 100%;
+}
+
+
+body{
+    min-height: 100%;
+    margin-left: 50px;
+    margin-right:50px;
+    display:flex;
+    flex-direction: column;
+}
+
+label{
+    display:inline-block;
+    width:150px;
+    height:100%;
+    font-size:100%;
+}
+
+footer{
+    margin-top:auto;
+    margin-bottom: 0;
+}
+
+.form_inputs {
+    
+    display:inline-block;
+    width:150px;
+}
+
+.row {
+    position:relative;
+    display:flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.column {
+    display:flex;
+    flex-direction: column;
+    gap:30px;
+}
+
+.header-div {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height:100px;
+    align-items: center;
+
+}
+
+.btn {
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.product {
+    display:flex;
+    position:relative;
+    float: left;
+    margin-left:5%;
+    margin-right:5%;
+    margin-top:30px;
+    margin-bottom: 30px;
+    width:250px;
+    height:160px;
+    background-color:white;
+    border:solid black;
+    align-items: center;
+}
+
+.column-product {
+    display:flex;
+    flex-direction: column;
+    gap:30px;
+    margin-left:auto;
+    margin-right:10px;
+}
+
+.checkbx {
+    float: left;
+    padding:5px;
+}
+
+.delete-checkbox {
+    position:absolute;
+    top:10px;
+    left:10px;
+}
+
+.data {
+    position:absolute;
+    text-align:center;
+}
+
+#footer {
+    background-color: white;
+    padding: 20px;
+}
+
+#footer_text {
+    text-align: center;
+}
+
+#cancel-btn {
+    margin-left: 0px;
+    margin-right:0px;
+}
+
+#add-btn {
+    margin-right:0px ;
+    margin-left:auto;
+}
+
+#product_form {
+    margin-top:10px;
+    flex: 1;
+    width:60%;
+}
+
+#product-container {
+    align-items: center;
+}

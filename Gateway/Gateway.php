@@ -1,13 +1,14 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/service/ViewController.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/service/FormController.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/service/Request.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/DBRequestParser.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Controllers/ViewController.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Controllers/FormController.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Gateway/Request.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/DBRequests/DBRequestParser.php';
 
     class Gateway {
 
         private $renderedProducts;
+
 
         public function __construct($form) {
             $this->viewActionHandler();
@@ -17,9 +18,18 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/DBRequest
                 $request = $formProcessor->processForm();
                 $this->databaseRequestHandler($request);
             }
-
-            
         }
+
+
+        private function setRenderedProducts($renderedProducts) {
+            $this->renderedProducts = $renderedProducts;
+        }
+
+
+        private function getRenderedProducts() {
+            return $this->renderedProducts;
+        }
+
 
         private function databaseRequestHandler($request) {
             $dbRequestParser = new DBRequestParser();
@@ -33,20 +43,11 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/DBRequest
         }
 
 
-        private function setRenderedProducts($renderedProducts) {
-            $this->renderedProducts = $renderedProducts;
-        }
-
-        private function getRenderedProducts() {
-            return $this->renderedProducts;
-        }
-
         private function viewActionHandler() {
             $request = new Request();
             $request->setAction(Request::LOADALL);
             $result = $this->databaseRequestHandler($request);
             
-
             $viewController = new ViewController();
             $renderedProducts = $viewController->render($result);
             $this->setRenderedProducts($renderedProducts);

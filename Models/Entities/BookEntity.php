@@ -1,9 +1,9 @@
 <?php
-include_once ('Product.php');
-include_once ('SimpleProduct.php');
+include_once ('ProductEntity.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/ViewModel/SimpleProductViewModel.php');
 
-    class Book extends Product{
-        private const SQL_SAVE_VALUES_TO_PRODUCT_BOOK = 'INSERT INTO `product_book` SET price=?, weight=?, sku=?, name=?, id=?';
+    class BookEntity extends ProductEntity{
+        private const SQL_SAVE_VALUES_TO_ProductEntity_BOOK = 'INSERT INTO `product_book` SET price=?, weight=?, sku=?, name=?, id=?';
         private const SQL_DELETE_OBJECT_BY_ID = 'DELETE FROM `product_book` WHERE id=?';
         private const SQL_LOAD_ALL_VALUES = 'SELECT * FROM `product_book`';
         private const TYPE = "Book";
@@ -31,23 +31,23 @@ include_once ('SimpleProduct.php');
         }
 
         public function delete() {
-            Product::deleteProduct($this->getId(), self::SQL_DELETE_OBJECT_BY_ID);
+            ProductEntity::deleteProduct($this->getId(), self::SQL_DELETE_OBJECT_BY_ID);
         }
 
 
         public function save() {
             //change with BookToArray() method
             $parametersForBook = [$this->getPrice(),$this->getWeight(), $this->getSku(), $this->getName()];
-            Product::saveProduct(self::TYPE, $this->getSku(), self::SQL_SAVE_VALUES_TO_PRODUCT_BOOK, $parametersForBook);
+            ProductEntity::saveProduct(self::TYPE, $this->getSku(), self::SQL_SAVE_VALUES_TO_ProductEntity_BOOK, $parametersForBook);
         }
 
         public static function loadAll() {
-            return Product::loadAllElements(self::SQL_LOAD_ALL_VALUES, self::TYPE);
+            return ProductEntity::loadAllElements(self::SQL_LOAD_ALL_VALUES, self::TYPE."Entity");
         }
 
         public function simplify() {
-            $simpleProduct = new SimpleProduct($this, "Weight", $this->getWeight() . "KG", self::TYPE);
-            return $simpleProduct;
+            $simpleProductEntity = new SimpleProductViewModel($this, "Weight", $this->getWeight() . "KG", self::TYPE);
+            return $simpleProductEntity;
         }
     }
 

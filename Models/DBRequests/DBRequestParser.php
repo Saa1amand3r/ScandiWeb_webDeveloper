@@ -1,6 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/service/Request.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Gateway/Request.php';
 require_once "DBRequestValidator.php";
+require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/ProductEntity.php';
     class DBRequestParser {
 
         private $request;
@@ -21,14 +22,14 @@ require_once "DBRequestValidator.php";
         }
 
         private function saveActionParse() {
-            $model = $this->request->getModel();
+            $model = $this->request->getModel()."Entity";
             $object = new $model($this->request->getData());
             $object->save();
             return null;
         }
 
         private function loadAllActionParse() {
-            $objects = Product::loadAllProducts();
+            $objects = ProductEntity::loadAllProducts();
             return $objects;
         }
 

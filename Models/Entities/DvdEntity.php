@@ -1,10 +1,9 @@
 <?php
 
-include_once ('DataBaseConnection.php');
-include_once ('Product.php');
-include_once ('QueryService.php');
+include_once ('ProductEntity.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/ViewModel/SimpleProductViewModel.php');
 
-    class Dvd extends Product{ 
+    class DvdEntity extends ProductEntity{ 
         private const SQL_SAVE_VALUES_TO_PRODUCT_DVD = 'INSERT INTO `product_dvd` SET price=?, size=?, sku=?, name=?, id=?';
         private const SQL_DELETE_OBJECT_BY_ID = 'DELETE FROM `product_dvd` WHERE id=?';
         private const SQL_LOAD_ALL_VALUES = 'SELECT * FROM `product_dvd`';
@@ -29,21 +28,21 @@ include_once ('QueryService.php');
         }
 
         public function delete() {
-            Product::deleteProduct($this->getId(), self::SQL_DELETE_OBJECT_BY_ID);
+            ProductEntity::deleteProduct($this->getId(), self::SQL_DELETE_OBJECT_BY_ID);
         }
 
 
         public function save() {
             $parametersForDvd = [$this->getPrice(), $this->getSize(),$this->getSku(), $this->getName()];
-            Product::saveProduct(self::TYPE, $this->getSku(),self::SQL_SAVE_VALUES_TO_PRODUCT_DVD, $parametersForDvd);
+            ProductEntity::saveProduct(self::TYPE, $this->getSku(),self::SQL_SAVE_VALUES_TO_PRODUCT_DVD, $parametersForDvd);
         }
 
         public static function loadAll() {
-            return Product::loadAllElements(self::SQL_LOAD_ALL_VALUES, self::TYPE);
+            return ProductEntity::loadAllElements(self::SQL_LOAD_ALL_VALUES, self::TYPE."Entity");
         }
 
         public function simplify() {
-            $simpleProduct = new SimpleProduct($this, "Size", $this->getSize() . " MB", self::TYPE);
+            $simpleProduct = new SimpleProductViewModel($this, "Size", $this->getSize() . " MB", self::TYPE);
             return $simpleProduct;
         }
     }

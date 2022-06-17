@@ -1,6 +1,6 @@
 <?php 
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/service/Request.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Gateway/Request.php';
 
     class DBRequestValidator{
 

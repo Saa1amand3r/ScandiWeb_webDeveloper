@@ -1,8 +1,11 @@
 <?php
     
-include_once ('DataBaseConnection.php');
+    include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/DataBaseConnection.php');
+    include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/DvdEntity.php');
+    include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/BookEntity.php');
+    include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/FurnitureEntity.php');
 
-    abstract class Product{
+    abstract class ProductEntity{
         private const SQL_SAVE_TO_PRODUCT = 'INSERT INTO `product` SET type =?, sku=?';
         private const SQL_DELETE_OBJECT_FROM_PRODUCTS_BY_ID = 'DELETE FROM `product` WHERE id=?';
 
@@ -65,7 +68,6 @@ include_once ('DataBaseConnection.php');
             $connection = new DataBaseConnection();
             $connection->connect();
             $objects = [];
-
             $result = $connection->query($sql);
             if (!$result) {
                 throw new Exception ("SQL doesnt work");
@@ -84,10 +86,11 @@ include_once ('DataBaseConnection.php');
         public static function loadAllProducts() {
             $simpleProductArray = [];
             $classes = self::findAllSubclasses();
+            
             foreach ($classes as $class) {
                 $products = $class::loadAll();
                 if (!empty($products)) {
-                    $simpleProductArray = array_merge($simpleProductArray, Product::simplifyArray($products));
+                    $simpleProductArray = array_merge($simpleProductArray, ProductEntity::simplifyArray($products));
                 }
             }
             return $simpleProductArray;

@@ -1,12 +1,12 @@
 <?php
 
-include_once ('Product.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Book.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Dvd.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Furniture.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/ProductEntity.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/BookEntity.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/DvdEntity.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/FurnitureEntity.php');
 
 
-    class SimpleProduct{
+    class SimpleProductViewModel{
         private $paramName;
         private $id;
         private $sku;
@@ -86,7 +86,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Furnitur
         }
 
         public function toBasicProduct() {
-            $model = $this->getType();
+            $model = $this->getType()."Entity";
             $object = new $model([]);
             $object->setId($this->getId());
             $object->setName($this->getName());

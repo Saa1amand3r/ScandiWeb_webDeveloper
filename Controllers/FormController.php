@@ -1,8 +1,6 @@
 <?php
 include_once ('ValidationController.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Book.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Dvd.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Furniture.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Gateway/Request.php');
 
 class FormController {
     private $form;
@@ -42,17 +40,14 @@ class FormController {
     private function saveActionProcessing() {
         $validatingModel = $this->form['productType'];
         $validationController = new ValidationController($validatingModel, $this->form);
-        //$validData = $validationController->getValidData();
+        // $validData = $validationController->getValidData();
         $validData = $this->form;
-        if (!empty($validData)) {
-            $request = new Request();
-            $request->setAction(Request::SAVE);
-            $request->setModel($validatingModel);
-            $request->setData($validData);
-            return $request;
-        } else {
-            throw new Exception("Validation error");
-        }
+        $request = new Request();
+        $request->setAction(Request::SAVE);
+        $request->setModel($validatingModel);
+        $request->setData($validData);
+        return $request;
+        
     }
 
     public function checkIsFormSet() {

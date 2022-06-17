@@ -1,10 +1,10 @@
 <?php
 
-include_once ('Product.php');
-include_once ('SimpleProduct.php');
+include_once ('ProductEntity.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/ViewModel/SimpleProductViewModel.php');
 
 
-    class Furniture extends Product{ 
+    class FurnitureEntity extends ProductEntity{ 
         private const SQL_SAVE_VALUES_TO_PRODUCT_FURNITURE = 'INSERT INTO `product_furniture` SET price=?, sku=?, name=?, height=?, width=?, length=?, id=?';
         private const SQL_DELETE_OBJECT_BY_ID = 'DELETE FROM `product_furniture` WHERE id=?';
         private const SQL_LOAD_ALL_VALUES = 'SELECT * FROM `product_furniture`';
@@ -49,7 +49,7 @@ include_once ('SimpleProduct.php');
         }
 
         public function delete() {
-            Product::deleteProduct($this->getId(), self::SQL_DELETE_OBJECT_BY_ID);
+            ProductEntity::deleteProduct($this->getId(), self::SQL_DELETE_OBJECT_BY_ID);
         }
 
 
@@ -57,15 +57,15 @@ include_once ('SimpleProduct.php');
             //furnitureToArray()
             $parametersForFurniture = [$this->getPrice(),$this->getSku(), $this->getName(),
                                        $this->getHeight(), $this->getWidth(), $this->getLength()];
-            Product::saveProduct(self::TYPE, $this->getSku(), self::SQL_SAVE_VALUES_TO_PRODUCT_FURNITURE, $parametersForFurniture);
+            ProductEntity::saveProduct(self::TYPE, $this->getSku(), self::SQL_SAVE_VALUES_TO_PRODUCT_FURNITURE, $parametersForFurniture);
         }
 
         public static function loadAll() {
-            return Product::loadAllElements(self::SQL_LOAD_ALL_VALUES, self::TYPE);
+            return ProductEntity::loadAllElements(self::SQL_LOAD_ALL_VALUES, self::TYPE."Entity");
         }
 
         public function simplify() {
-            $simpleProduct = new SimpleProduct($this, "Dimension", $this->getHeight() . "x" . $this->getWidth() . "x" . $this->getLength(), self::TYPE);
+            $simpleProduct = new SimpleProductViewModel($this, "Dimension", $this->getHeight() . "x" . $this->getWidth() . "x" . $this->getLength(), self::TYPE);
             return $simpleProduct;
         }
     }
