@@ -1,5 +1,7 @@
 <?php
 
+namespace Gerbreder\Controllers;
+
     class ViewController {
 
         public function render($simpleProductArray) {

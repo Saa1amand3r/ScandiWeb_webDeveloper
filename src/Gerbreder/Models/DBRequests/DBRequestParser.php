@@ -1,7 +1,11 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Gateway/Request.php';
-require_once "DBRequestValidator.php";
-require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/ProductEntity.php';
+
+namespace Gerbreder\Models\DBRequests;
+
+use Gerbreder\Gateway\Request as Request;
+use Gerbreder\Models\DBRequests\DBRequestValidator as DBRequestValidator;
+use Gerbreder\Models\Entities\ProductEntity as ProductEntity;
+
     class DBRequestParser {
 
         private $request;
@@ -22,7 +26,7 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/
         }
 
         private function saveActionParse() {
-            $model = $this->request->getModel()."Entity";
+            $model = ProductEntity::ENTITY_NAMESPACE_PREFIX.$this->request->getModel()."Entity";
             $object = new $model($this->request->getData());
             $object->save();
             return null;

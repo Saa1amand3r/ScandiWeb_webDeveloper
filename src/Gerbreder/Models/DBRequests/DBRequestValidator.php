@@ -1,6 +1,8 @@
 <?php 
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Gateway/Request.php';
+namespace Gerbreder\Models\DBRequests;
+
+use Gerbreder\Gateway\Request as Request;
 
     class DBRequestValidator{
 

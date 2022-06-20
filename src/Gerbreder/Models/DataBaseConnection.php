@@ -1,5 +1,7 @@
 <?php
 
+namespace Gerbreder\Models;
+
     class DataBaseConnection {
         private const SERVER_ADDRESS = "localhost";
         private const USERNAME = "root";

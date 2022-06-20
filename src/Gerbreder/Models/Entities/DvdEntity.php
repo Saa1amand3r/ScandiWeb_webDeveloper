@@ -1,7 +1,8 @@
 <?php
 
-include_once ('ProductEntity.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/ViewModel/SimpleProductViewModel.php');
+namespace Gerbreder\Models\Entities;
+
+use Gerbreder\Models\ViewModel\SimpleProductViewModel as SimpleProductViewModel;
 
     class DvdEntity extends ProductEntity{ 
         private const SQL_SAVE_VALUES_TO_PRODUCT_DVD = 'INSERT INTO `product_dvd` SET price=?, size=?, sku=?, name=?, id=?';

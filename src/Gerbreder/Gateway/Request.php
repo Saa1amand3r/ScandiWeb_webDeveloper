@@ -1,5 +1,7 @@
 <?php
 
+namespace Gerbreder\Gateway;
+
     class Request{
         public const LOADALL= "loadAll";
         public const SAVE = "save";
@@ -12,7 +14,7 @@
         private $model;
 
         public static function getActionTypes() {
-            $reflection = new ReflectionClass('Request');
+            $reflection = new \ReflectionClass('Gerbreder\Gateway\Request');
             return $reflection->getConstants();
         }
 

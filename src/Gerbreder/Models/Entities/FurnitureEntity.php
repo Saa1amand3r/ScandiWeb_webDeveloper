@@ -1,8 +1,8 @@
 <?php
 
-include_once ('ProductEntity.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/ViewModel/SimpleProductViewModel.php');
+namespace Gerbreder\Models\Entities;
 
+use Gerbreder\Models\ViewModel\SimpleProductViewModel as SimpleProductViewModel;
 
     class FurnitureEntity extends ProductEntity{ 
         private const SQL_SAVE_VALUES_TO_PRODUCT_FURNITURE = 'INSERT INTO `product_furniture` SET price=?, sku=?, name=?, height=?, width=?, length=?, id=?';

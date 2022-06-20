@@ -1,11 +1,12 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Controllers/ViewController.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Controllers/FormController.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Gateway/Request.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/DBRequests/DBRequestParser.php';
+namespace Gerbreder\Gateway;
 
-    class Gateway {
+use Gerbreder\Controllers\ViewController as ViewController;
+use Gerbreder\Controllers\FormController as FormController;
+use Gerbreder\Models\DBRequests\DBRequestParser as DBRequestParser;
+
+    class Processor {
 
         private $renderedProducts;
 

@@ -1,13 +1,16 @@
 <?php
     
-    include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/DataBaseConnection.php');
-    include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/DvdEntity.php');
-    include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/BookEntity.php');
-    include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/FurnitureEntity.php');
+    namespace Gerbreder\Models\Entities;
+
+    use Gerbreder\Models\DataBaseConnection as DataBaseConnection;
+    // use Gerbreder\Models\Entities\BookEntity as BookEntity;
+    // use Gerbreder\Models\Entities\FurnitureEntity as FurnitureEntity;
+    // use Gerbreder\Models\Entities\DvdEntity as DvdEntity;
 
     abstract class ProductEntity{
         private const SQL_SAVE_TO_PRODUCT = 'INSERT INTO `product` SET type =?, sku=?';
         private const SQL_DELETE_OBJECT_FROM_PRODUCTS_BY_ID = 'DELETE FROM `product` WHERE id=?';
+        public const ENTITY_NAMESPACE_PREFIX = "Gerbreder\Models\Entities\\";
 
         protected $id;
         protected $sku;
@@ -65,6 +68,7 @@
         }
 
         protected static function loadAllElements($sql, $model) {
+            $model = self::ENTITY_NAMESPACE_PREFIX.$model;
             $connection = new DataBaseConnection();
             $connection->connect();
             $objects = [];
@@ -88,9 +92,12 @@
             $classes = self::findAllSubclasses();
             
             foreach ($classes as $class) {
-                $products = $class::loadAll();
-                if (!empty($products)) {
-                    $simpleProductArray = array_merge($simpleProductArray, ProductEntity::simplifyArray($products));
+                if(!empty($class)) {
+                    $class = self::ENTITY_NAMESPACE_PREFIX.$class;
+                    $products = $class::loadAll();
+                    if (!empty($products)) {
+                        $simpleProductArray = array_merge($simpleProductArray, ProductEntity::simplifyArray($products));
+                    }
                 }
             }
             return $simpleProductArray;
@@ -108,11 +115,12 @@
 
         private static function findAllSubclasses() {
             $classes = [];
-            $declaredClasses = get_declared_classes();
-            foreach($declaredClasses as $dclass) {
-                if (is_subclass_of($dclass, __CLASS__)) {
-                    $classes[] = $dclass;
-                }
+            $entityFiles = scandir(__DIR__);
+            foreach($entityFiles as $efile) {
+                $efile = str_replace(".php","", $efile);
+                $efile = str_replace(".","", $efile);
+                $efile = str_replace("ProductEntity","", $efile);
+                $classes[] = $efile;
             }
             return $classes;
         }

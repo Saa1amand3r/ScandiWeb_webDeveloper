@@ -1,5 +1,5 @@
 #Alternate default index page
-DirectoryIndex view/html/ProductList.html
+DirectoryIndex src/Gerbreder/view/html/ProductList.html
 
 AddType application/x-httpd-php .htm .html
 

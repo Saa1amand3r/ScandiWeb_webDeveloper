@@ -1,6 +1,9 @@
 <?php
-include_once ('ValidationController.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Gateway/Request.php');
+
+namespace Gerbreder\Controllers;
+
+use Gerbreder\Controllers\ValidationController as ValidationController;
+use Gerbreder\Gateway\Request as Request;
 
 class FormController {
     private $form;
@@ -39,7 +42,7 @@ class FormController {
 
     private function saveActionProcessing() {
         $validatingModel = $this->form['productType'];
-        $validationController = new ValidationController($validatingModel, $this->form);
+        // $validationController = new ValidationController($validatingModel, $this->form);
         // $validData = $validationController->getValidData();
         $validData = $this->form;
         $request = new Request();

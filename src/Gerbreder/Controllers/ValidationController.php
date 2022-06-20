@@ -1,5 +1,7 @@
 <?php
 
+namespace Gerbreder\Controllers;
+
     class ValidationController {
         
         private const FIELD_NAMES = [
@@ -20,7 +22,7 @@
 
         public function __construct($validatingModel, $form) {
             $this->setValidatingModel($validatingModel);
-            $this->setValidData($this->$validator);
+            $this->setValidData($this->validator($form));
         }
 
         private function validator($data) {
@@ -35,7 +37,7 @@
                     $this->addErrorToErrors($name." is required");
                 } else {
                     if ($name !="price" && !preg_match(self::VALIDATION_RULES[$name],$data[$name])) {
-                        $this->addErrorToErrors(ERROR_TEXT[$name]);
+                        $this->addErrorToErrors(self::ERROR_TEXT[$name]);
                     }
                 }
             }
@@ -45,7 +47,7 @@
                 $result = $this->$validationMethod($data);
                 return $result;
             }
-            throw new Exception("Validation error");
+            throw new \Exception("Validation error");
         }
 
         private function validatorBook($data) {

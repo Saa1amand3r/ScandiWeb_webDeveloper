@@ -1,12 +1,14 @@
 <?php
 
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/ProductEntity.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/BookEntity.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/DvdEntity.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities/FurnitureEntity.php');
+namespace Gerbreder\Models\ViewModel;
 
+use Gerbreder\Models\Entities\BookEntity as BookEntity;
+use Gerbreder\Models\Entities\ProductEntity as ProductEntity;
+use Gerbreder\Models\Entities\DvdEntity as DvdEntity;
+use Gerbreder\Models\Entities\FurnitureEntity as FurnitureEntity;
 
     class SimpleProductViewModel{
+        private const ENTITY_NAMESPACE_PREFIX = "Gerbreder\Models\Entities\\";
         private $paramName;
         private $id;
         private $sku;
@@ -86,7 +88,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/Models/Entities
         }
 
         public function toBasicProduct() {
-            $model = $this->getType()."Entity";
+            $model = ProductEntity::ENTITY_NAMESPACE_PREFIX.$this->getType()."Entity";
             $object = new $model([]);
             $object->setId($this->getId());
             $object->setName($this->getName());
