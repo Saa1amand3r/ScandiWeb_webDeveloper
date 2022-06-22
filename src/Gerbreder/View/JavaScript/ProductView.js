@@ -34,5 +34,5 @@ oReq.onload = function() {
         div2.appendChild(params);
     }
 };
-oReq.open("post", "http://localhost/ScandiWeb_webDeveloper/main.php", true);
+oReq.open("post", "https://juniortest-erik-gerbreder.000webhostapp.com/main.php", true);
 oReq.send();

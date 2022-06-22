@@ -2,11 +2,9 @@
 
 namespace Gerbreder\Models;
 
+use Gerbreder\Configuration\Config as Config;
+
     class DataBaseConnection {
-        private const SERVER_ADDRESS = "localhost";
-        private const USERNAME = "root";
-        private const DATABASE_NAME = "scandiweb_junior";
-        private const PASSWORD = "";
 
         private $link;
         private $lastOperationId;
@@ -28,7 +26,7 @@ namespace Gerbreder\Models;
         }
 
         public function connect() {
-            $this->setLink(mysqli_connect(DataBaseConnection::SERVER_ADDRESS,DataBaseConnection::USERNAME,DataBaseConnection::PASSWORD,DataBaseConnection::DATABASE_NAME));
+            $this->setLink(mysqli_connect(Config::DATABASE_ADDRESS,Config::DATABASE_USERNAME,Config::DATABASE_PASSWORD,Config::DATABASE_NAME));
             if ($this->getLink() == false) {
                 throw new Exception("ERROR: Cant connect to MYSQL: " + mysqli_connect_error());
             }

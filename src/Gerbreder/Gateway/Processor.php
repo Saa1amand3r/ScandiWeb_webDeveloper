@@ -5,6 +5,7 @@ namespace Gerbreder\Gateway;
 use Gerbreder\Controllers\ViewController as ViewController;
 use Gerbreder\Controllers\FormController as FormController;
 use Gerbreder\Models\DBRequests\DBRequestParser as DBRequestParser;
+use Gerbreder\Configuration\Config as Config;
 
     class Processor {
 
@@ -34,7 +35,8 @@ use Gerbreder\Models\DBRequests\DBRequestParser as DBRequestParser;
             if ($result != null) {
                 return $result;
             } else {
-                header('Location: http://localhost/ScandiWeb_webDeveloper/');
+                $url = Config::HOME_PAGE_FULL_ADDRESS;
+                echo "<script type='text/javascript'>document.location.href='{$url}';</script>";
             }
         }
 
