@@ -1,28 +1,35 @@
 <?php
 
-include_once ('Product.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Book.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Dvd.php');
-include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Furniture.php');
+namespace Gerbreder\Models\ViewModel;
 
+use Gerbreder\Models\Entities\BookEntity as BookEntity;
+use Gerbreder\Models\Entities\ProductEntity as ProductEntity;
+use Gerbreder\Models\Entities\DvdEntity as DvdEntity;
+use Gerbreder\Models\Entities\FurnitureEntity as FurnitureEntity;
 
-    class SimpleProduct{
+    class SimpleProductViewModel{
+        private const ENTITY_NAMESPACE_PREFIX = "Gerbreder\Models\Entities\\";
         private $paramName;
         private $id;
         private $sku;
         private $name;
         private $price;
         private $parameters;
+        private $type;
 
-        public function __construct($object, $paramName, $parameters) {
+        public function __construct($object, $paramName, $parameters, $type) {
             $this->setSku($object->getSku());
             $this->setName($object->getName());
             $this->setPrice($object->getPrice());
             $this->setId($object->getId());
             $this->setParameters($parameters);
             $this->setParamName($paramName);
+            $this->setType($type);
         }
 
+        public function getType() {
+            return $this->type;
+        }
         public function getId() {
             return $this->id;
         }
@@ -36,6 +43,9 @@ include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Furnitur
             return $this->price;
         }
 
+        protected function setType($type) {
+            $this->type = $type;
+        }
         protected function setId($id) {
             $this->id = $id;
         }
@@ -75,6 +85,16 @@ include_once ($_SERVER['DOCUMENT_ROOT'].'/ScandiWeb_webDeveloper/models/Furnitur
                 "parameters" => $this->getParameters()
             );
             return $data;
+        }
+
+        public function toBasicProduct() {
+            $model = ProductEntity::ENTITY_NAMESPACE_PREFIX.$this->getType()."Entity";
+            $object = new $model([]);
+            $object->setId($this->getId());
+            $object->setName($this->getName());
+            $object->setSku($this->getSku());
+            $object->setPrice($this->getPrice());
+            return $object;
         }
     }
 

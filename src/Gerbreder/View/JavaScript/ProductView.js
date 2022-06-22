@@ -1,4 +1,4 @@
-var oReq = new XMLHttpRequest(); // New request object
+var oReq = new XMLHttpRequest();
 
 oReq.responseType = "json";
 oReq.onload = function() {
@@ -34,5 +34,5 @@ oReq.onload = function() {
         div2.appendChild(params);
     }
 };
-oReq.open("post", "http://localhost/ScandiWeb_webDeveloper/script.php", true);
+oReq.open("post", "http://localhost/ScandiWeb_webDeveloper/main.php", true);
 oReq.send();
