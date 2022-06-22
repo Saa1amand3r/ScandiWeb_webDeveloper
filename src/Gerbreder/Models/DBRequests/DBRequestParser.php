@@ -10,16 +10,23 @@ use Gerbreder\Models\Entities\ProductEntity as ProductEntity;
 
         private $request;
 
+
+        private function setRequest($request) {
+            $this->request = $request;
+        }
+
+        private function getRequest() {
+            return $this->request;
+        }
+
+
         public function parse($DBRequest) {
-            // setter!!!
-            $this->request = $DBRequest;
-            $action = $this->request->getAction();
+            $this->setRequest($DBRequest);
 
             $requestValidator = new DBRequestValidator();
             
             if ($requestValidator->validate($this->request)) {
-                $method = $action . "ActionParse";
-                return $this->$method();
+                return $this->formMethod();
             } else {
                 return null;
             }
@@ -43,6 +50,12 @@ use Gerbreder\Models\Entities\ProductEntity as ProductEntity;
                 $object->delete();
             }
             return null;
+        }
+
+        private function formMethod() {
+            $action = $this->getRequest()->getAction();
+            $method = $action . "ActionParse";
+            return $this->$method();
         }
 
     }

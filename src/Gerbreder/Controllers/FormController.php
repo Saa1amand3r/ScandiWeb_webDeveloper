@@ -10,24 +10,39 @@ class FormController {
     private $formType;
     private $renderedProducts;
     
-    public function __construct($form, $renderedProducts = []) {
-        //setters!!!
+    private function setForm($form) {
         $this->form = $form;
+    }
+    private function setFormType($formType) {
+        $this->formType = $formType;
+    }
+    private function setRenderedProducts($renderedProducts) {
         $this->renderedProducts = $renderedProducts;
+    }
+    
+    private function getForm() {
+        return $this->form;
+    }
+    
+    private function getFormType() {
+        return $this->formType;
+    }
+    
+    private function getRenderedProducts() {
+        return $this->renderedProducts;
+    }
+
+    public function __construct($form, $renderedProducts = []) {
+        $this->setForm($form);
+        $this->setRenderedProducts($renderedProducts);
     }
 
     private function deleteActionProcessing() {
 
         $deleteQueue = [];
 
-        //getter!!!
-        if (!empty($this->renderedProducts)) {
-            foreach ($this->renderedProducts as $product) {
-                if (isset($this->form[$product->getId()])) {
-                    $deleteQueue[] = $product;
-                }
-            }
-            
+        if (!empty($this->getRenderedProducts())) {
+            $deleteQueue = $this->findMarkedProducts();
             $request = new Request();
             $request->setAction(Request::DELETE);
             $request->setData($deleteQueue);
@@ -41,20 +56,17 @@ class FormController {
     }
 
     private function saveActionProcessing() {
-        $validatingModel = $this->form['productType'];
-        // $validationController = new ValidationController($validatingModel, $this->form);
-        // $validData = $validationController->getValidData();
-        $validData = $this->form;
+        $productModel = $this->form['productType'];
+        $validData = $this->validateForm();
         $request = new Request();
         $request->setAction(Request::SAVE);
-        $request->setModel($validatingModel);
+        $request->setModel($productModel);
         $request->setData($validData);
         return $request;
-        
     }
 
     public function checkIsFormSet() {
-        if (isset($this->form['form_id'])) {
+        if (isset($this->getForm()['form_id'])) {
             return true;
         }
         else {
@@ -62,22 +74,37 @@ class FormController {
         }
     }
 
-    public function checkFormType() {
-        $id = $this->form['form_id'];
+    private function checkFormType() {
+        $id = $this->getForm()['form_id'];
         if ($id == "delete-button-form") {
-            $this->formType = "deleteActionProcessing";
+            $this->setFormType("deleteActionProcessing");
         }
         if ($id == "product-form") {
-            $this->formType = "saveActionProcessing";
+            $this->setFormType("saveActionProcessing");
         }
     }
 
     public function processForm() {
         $this->checkFormType();
-        $method = $this->formType;
+        $method = $this->getFormType();
         return $this->$method();
     }
 
+
+    private function findMarkedProducts() {
+        foreach ($this->getRenderedProducts() as $product) {
+            if (isset($this->getForm()[$product->getId()])) {
+                $deleteQueue[] = $product;
+            }
+        }
+        return $deleteQueue;
+    }
+
+    private function validateForm() {
+        $validationController = new ValidationController($this->getForm());
+        $validData = $validationController->getValidData();
+        return $validData;
+    }
 }
 
 ?>

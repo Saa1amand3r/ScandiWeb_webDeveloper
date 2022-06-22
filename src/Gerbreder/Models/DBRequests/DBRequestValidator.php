@@ -14,7 +14,7 @@ use Gerbreder\Gateway\Request as Request;
                         return true;
                     }
                 }
-                throw new Exception("ACTION IS UNREGISTRED");
+                return false;
             } else {
                 return false;
             }

@@ -1,4 +1,4 @@
-var oReq = new XMLHttpRequest(); // New request object
+var oReq = new XMLHttpRequest();
 
 oReq.responseType = "json";
 oReq.onload = function() {

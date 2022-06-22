@@ -11,17 +11,6 @@ use Gerbreder\Models\DBRequests\DBRequestParser as DBRequestParser;
         private $renderedProducts;
 
 
-        public function __construct($form) {
-            $this->viewActionHandler();
-
-            $formProcessor = new FormController($form, $this->getRenderedProducts());
-            if ($formProcessor->checkIsFormSet()) {
-                $request = $formProcessor->processForm();
-                $this->databaseRequestHandler($request);
-            }
-        }
-
-
         private function setRenderedProducts($renderedProducts) {
             $this->renderedProducts = $renderedProducts;
         }
@@ -29,6 +18,12 @@ use Gerbreder\Models\DBRequests\DBRequestParser as DBRequestParser;
 
         private function getRenderedProducts() {
             return $this->renderedProducts;
+        }
+
+
+        public function __construct($form) {
+            $this->viewActionHandler();
+            $this->formActionHandler($form);
         }
 
 
@@ -54,7 +49,13 @@ use Gerbreder\Models\DBRequests\DBRequestParser as DBRequestParser;
             $this->setRenderedProducts($renderedProducts);
         }
 
-        
+        private function formActionHandler($form) {
+            $formProcessor = new FormController($form, $this->getRenderedProducts());
+            if ($formProcessor->checkIsFormSet()) {
+                $request = $formProcessor->processForm();
+                $this->databaseRequestHandler($request);
+            }
+        }
 
     }
 

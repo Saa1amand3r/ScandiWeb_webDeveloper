@@ -19,7 +19,6 @@ label{
 }
 
 .form_inputs {
-    
     display:inline-block;
     width:150px;
 }
@@ -52,32 +51,6 @@ label{
     margin-right:10px;
 }
 
-.product {
-    display:flex;
-    float: left;
-    margin-left:5%;
-    margin-right:5%;
-    margin-top:30px;
-    margin-bottom: 30px;
-    width:250px;
-    height:160px;
-    background-color:white;
-    border:solid black;
-    align-items: center;
-}
-
-.column-product {
-    display:flex;
-    flex-direction: column;
-    gap:30px;
-    margin-left:auto;
-    margin-right:10px;
-}
-
-.checkbx {
-    float: left;
-    padding:5px;
-}
 
 #footer {
     background-color: white;
@@ -93,17 +66,16 @@ label{
     margin-right:0px;
 }
 
-#add-btn {
-    margin-right:0px ;
-    margin-left:auto;
-}
-
 #product_form {
     margin-top:10px;
     flex: 1;
     width:60%;
 }
 
-#product-container {
-    align-items: center;
+#sku-error{
+    display: none;
+    font-size: 0.8em;
+}
+#sku-error.visible {
+    display: block;
 }

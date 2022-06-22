@@ -6,9 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="../JavaScript/TypeChange.js"></script>
-  <script src="../JavaScript/Validation.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
-  <!-- check if i need jquery -->
+  <script src="../JavaScript/LoadProducts.js"></script>
 </head>
 <body>
   <header>
@@ -20,24 +18,28 @@
     <hr>
   </header>
   
-  <form id="product_form" method="POST" onsubmit="return validateForm()" action="../../../../main.php">
+  <form id="product_form" method="POST" action="../../../../main.php">
     <input type="hidden" name="form_id" value="product-form">
 
       <div class="column">
 
-        <div class="row">
+        <div class="row" id="sku-row">
           <label for='sku' id="sku-label">SKU </label>
-          <input type="text" name="sku" id="sku" class="form_inputs" required>
+          <input type="text" pattern="^[a-zA-Z0-9]*$" maxlength="50" name="sku" id="sku" class="form_inputs" required>
         </div>
+
+        <span id="sku-error">
+          This SKU is already used
+        </span>
 
         <div class="row">
           <label for="name" id="name-label">Name </label>
-          <input type="text" name="name" id="name" class="form_inputs" required>
+          <input type="text" pattern="^[-a-zA-Z0-9-()]+(\s+[-a-zA-Z0-9-()]+)*$" maxlength="500" name="name" id="name" class="form_inputs" required>
         </div>
         
         <div class="row">
           <label for="price" id="price-label">Price ($) </label>
-          <input type="number" name="price" class="form_inputs" id="price" required>
+          <input type="number" max="99999999" name="price" class="form_inputs" id="price" required>
         </div>
 
         <div class="row">
@@ -54,6 +56,7 @@
         
       </div>
   </form>
+  <script src="../JavaScript/Validation.js"></script>
    
   <footer>
     <div id="footer">

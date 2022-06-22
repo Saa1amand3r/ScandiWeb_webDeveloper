@@ -8,6 +8,7 @@
     // use Gerbreder\Models\Entities\DvdEntity as DvdEntity;
 
     abstract class ProductEntity{
+
         private const SQL_SAVE_TO_PRODUCT = 'INSERT INTO `product` SET type =?, sku=?';
         private const SQL_DELETE_OBJECT_FROM_PRODUCTS_BY_ID = 'DELETE FROM `product` WHERE id=?';
         public const ENTITY_NAMESPACE_PREFIX = "Gerbreder\Models\Entities\\";
@@ -17,7 +18,11 @@
         protected $name;
         protected $price;
 
+
+
         abstract public function simplify();
+        abstract public function toArray();
+
 
         public function getId() {
             return $this->id;
@@ -45,12 +50,13 @@
             $this->price = $price;
         }
 
+
         protected static function saveProduct($type, $sku, $uniqueSQL, $uniqueParameters) {
             $connection = new DataBaseConnection();
             $connection->connect();
             $stmt = $connection->preparedQuery(self::SQL_SAVE_TO_PRODUCT, [$type, $sku]);
             $stmt->store_result();
-            $connection->saveLastOperationId();
+            $connection->setLastOperationId();
             $uniqueParameters[] = $connection->getLastOperationId();
             $stmt = $connection->preparedQuery($uniqueSQL, $uniqueParameters);
             $connection->close();
@@ -71,17 +77,8 @@
             $model = self::ENTITY_NAMESPACE_PREFIX.$model;
             $connection = new DataBaseConnection();
             $connection->connect();
-            $objects = [];
             $result = $connection->query($sql);
-            if (!$result) {
-                throw new Exception ("SQL doesnt work");
-            }
-            while ($row = mysqli_fetch_array($result)) {
-                $object = new $model($row);
-                $object->setId($row['id']);
-                $objects[] = $object;
-            }
-            
+            $objects = self::convertRowToEntity($result, $model);
             $connection->close();
             return $objects;
         }
@@ -117,12 +114,27 @@
             $classes = [];
             $entityFiles = scandir(__DIR__);
             foreach($entityFiles as $efile) {
-                $efile = str_replace(".php","", $efile);
-                $efile = str_replace(".","", $efile);
-                $efile = str_replace("ProductEntity","", $efile);
-                $classes[] = $efile;
+                $className = self::convertFileNameToClassName($efile);
+                $classes[] = $className;
             }
             return $classes;
+        }
+
+        private static function convertRowToEntity($result, $model) {
+            $objects = [];
+            while ($row = mysqli_fetch_array($result)) {
+                $object = new $model($row);
+                $object->setId($row['id']);
+                $objects[] = $object;
+            }
+            return $objects;
+        }
+
+        private static function convertFileNameToClassName($efile) {
+            $efile = str_replace(".php","", $efile);
+            $efile = str_replace(".","", $efile);
+            $efile = str_replace("ProductEntity","", $efile);
+            return $efile;
         }
     }
 
